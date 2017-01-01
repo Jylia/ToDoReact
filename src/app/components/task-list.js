@@ -1,72 +1,46 @@
 import React from 'react';
 import Checkbox from 'material-ui/Checkbox';
 import TaskItem from './task-item';
+import { database } from 'firebase';
 
 class TaskList extends React.Component {
   constructor(props) {
     super(props);
-
+    this.db = database().ref();
     this.state = {
-      tasks: [
-        {
-          id: 1,
-          name: 'task1',
-          due: new Date(),
-          isCompleted: false
-        },
-        {
-          id: 2,
-          name: 'task2',
-          due: new Date(),
-          isCompleted: false
-        },
-        {
-          id: 3,
-          name: 'task3',
-          due: new Date(),
-          isCompleted: true
-        },
-        {
-          id: 4,
-          name: 'task4',
-          due: new Date(),
-          isCompleted: false
-        },
-        {
-          id: 5,
-          name: 'task5',
-          due: new Date(),
-          isCompleted: false
-        }
-      ],
-      markAllCheckbox: false
+      isLoading: true
     };
+  }
+
+  componentDidMount() {
+    this.db.on('value', (snapshot) => {
+      this.setState({
+        ...snapshot.val(),
+        isLoading: false
+      });
+    });
+  }
+
+  componentWllUnmount() {
+    this.db.off();
   }
 
   markAll() {
     const newAllCompletedState = !this.state.markAllCheckbox;
-    this.setState({
-      tasks: this.state.tasks.map(item => {
-        return {
-          ...item,
-          isCompleted: newAllCompletedState,
-        };
-      }),
+
+    const updates = {
       markAllCheckbox: newAllCompletedState
+    };
+    Object.entries(this.state.tasks).forEach(([key, task]) => {
+      updates[`tasks/${key}/isCompleted`] = newAllCompletedState;
     });
+
+    return this.db.update(updates);
   }
 
-  toggleCompleted(id) {
-    this.setState({
-      tasks: this.state.tasks.map(item => {
-        if (item.id !== id) {
-          return item;
-        }
-        return {
-          ...item,
-          isCompleted: !item.isCompleted
-        }
-      })
+  toggleCompleted(key) {
+    this.db.update({
+      [`tasks/${key}/isCompleted`]: !this.state.tasks[key].isCompleted
     });
   }
 
@@ -75,20 +49,31 @@ class TaskList extends React.Component {
       <div>
         <div className="TaskList">
           <h2>Tasks for Today</h2>
-  	      <Checkbox
-            label={`Mark All as ${this.state.markAllCheckbox ? 'Uncompleted' : 'Completed'}`}
-            onCheck={() => this.markAll()}
-            checked={this.state.markAllCheckbox}
-          />
-        </div>
-        <div>
-          {this.state.tasks.map(taskItem => 
-            <TaskItem
-              key={taskItem.id}
-              task={taskItem}
-              toggleCompleted={id => this.toggleCompleted(id)}
-            />
-          )}
+          {
+            this.state.isLoading ? (
+              <div>Loading data...</div>
+              ) : (
+                <div>
+                  <Checkbox
+                    label={`Mark All as ${this.state.markAllCheckbox ? 'Uncompleted' : 'Completed'}`}
+                    onCheck={() => this.markAll()}
+                    checked={this.state.markAllCheckbox}
+                  />
+                  <div>
+                    {
+                      Object.entries(this.state.tasks).map(
+                        ([key, taskItem]) => 
+                          <TaskItem
+                            key={key}
+                            task={taskItem}
+                            toggleCompleted={id => this.toggleCompleted(key)}
+                          />
+                      )
+                    }
+                  </div>
+                </div>
+              )
+          }
         </div>
       </div>
     );
