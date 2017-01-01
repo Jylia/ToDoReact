@@ -38,8 +38,22 @@ class TaskList extends React.Component {
           due: new Date(),
           isCompleted: false
         }
-      ]
+      ],
+      markAllCheckbox: false
     };
+  }
+
+  markAll() {
+    const newAllCompletedState = !this.state.markAllCheckbox;
+    this.setState({
+      tasks: this.state.tasks.map(item => {
+        return {
+          ...item,
+          isCompleted: newAllCompletedState,
+        };
+      }),
+      markAllCheckbox: newAllCompletedState
+    });
   }
 
   toggleCompleted(id) {
@@ -48,7 +62,10 @@ class TaskList extends React.Component {
         if (item.id !== id) {
           return item;
         }
-        return Object.assign({}, item, {isCompleted: !item.isCompleted});
+        return {
+          ...item,
+          isCompleted: !item.isCompleted
+        }
       })
     });
   }
@@ -58,7 +75,11 @@ class TaskList extends React.Component {
       <div>
         <div className="TaskList">
           <h2>Tasks for Today</h2>
-  	      <Checkbox label="Mark All as Done" />
+  	      <Checkbox
+            label={`Mark All as ${this.state.markAllCheckbox ? 'Uncompleted' : 'Completed'}`}
+            onCheck={() => this.markAll()}
+            checked={this.state.markAllCheckbox}
+          />
         </div>
         <div>
           {this.state.tasks.map(taskItem => 
