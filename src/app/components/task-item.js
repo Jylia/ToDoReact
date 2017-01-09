@@ -1,5 +1,6 @@
 import React from 'react';
 import Checkbox from 'material-ui/Checkbox';
+import FlatButton from 'material-ui/FlatButton';
 
 class TaskItem extends React.Component {
   openInput( name ) {
@@ -11,6 +12,7 @@ class TaskItem extends React.Component {
       task: taskItem,
       toggleCompleted,
       updateTaskName,
+      deleteTask,
     } = this.props;
 
 		return (
@@ -19,6 +21,7 @@ class TaskItem extends React.Component {
         <div>
           <span onClick={() => this.openInput(taskItem.name)}>{taskItem.name}</span>
           <input type="text" onChange={(e) => updateTaskName(e, taskItem.id)} />
+          <FlatButton label="Delete Task" secondary={true} onTouchTap={() => deleteTask(taskItem.id)} />
         </div>
       </div>
 		);

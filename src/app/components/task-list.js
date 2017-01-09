@@ -50,6 +50,12 @@ class TaskList extends React.Component {
     });
   }
 
+  deleteTask( key ) {
+    this.db.update({
+      [`tasks/${key}`]: null
+    })
+  }
+
   render() {
     return (
       <div>
@@ -74,6 +80,7 @@ class TaskList extends React.Component {
                             task={taskItem}
                             toggleCompleted={id => this.toggleCompleted(key)}
                             updateTaskName={e => this.updateTaskName(e, key)}
+                            deleteTask={id => this.deleteTask(key)}
                           />
                       )
                     }
