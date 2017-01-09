@@ -44,6 +44,12 @@ class TaskList extends React.Component {
     });
   }
 
+  updateTaskName( e, key ) {
+    this.db.update({
+      [`tasks/${key}/name`]: e.target.value
+    });
+  }
+
   render() {
     return (
       <div>
@@ -67,6 +73,7 @@ class TaskList extends React.Component {
                             key={key}
                             task={taskItem}
                             toggleCompleted={id => this.toggleCompleted(key)}
+                            updateTaskName={e => this.updateTaskName(e, key)}
                           />
                       )
                     }
