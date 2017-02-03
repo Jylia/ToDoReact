@@ -21,7 +21,6 @@ class TaskItem extends React.Component {
     const {
       task: taskItem,
       toggleCompleted,
-      updateTaskName,
       deleteTask,
     } = this.props;
 
