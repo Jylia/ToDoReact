@@ -5,7 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 
 class TaskItem extends React.Component {
   openInput( name, id ) {
-    console.log('Input shoud be shown here');
+
     let nodeId = 'task-name-' + id.toString();
     ReactDOM.render(
       <input type="text"
