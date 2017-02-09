@@ -6,34 +6,24 @@ import { database } from 'firebase';
 class TaskItemName extends React.Component {
   render() {
     const {
-      task: taskItem,
-      action,
-      db
+      task: taskItem
     } = this.props;
 
-    const updateTaskName = ( e, key ) => {
-      db.update({
-        [`tasks/${key}/name`]: e.target.value
-      });
-      this.props.callback();
-    };
-
-    switch (action) {
-      case 'EDIT_TO_DO':
-        return (
-            <input type="text"
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {updateTaskName(e, taskItem.id);}}
-              }
-              defaultValue={taskItem.name}
-              onBlur={(e) => updateTaskName(e, taskItem.id)}
-            />
-        );
-      default:
-        return (
-          <span>{taskItem.name}</span>
-        );
+    if (taskItem.isEditable) {
+      return (
+        <input type="text"
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {this.props.updateTaskNameById(this.props.task.id, e.target.value)}}
+          }
+          defaultValue={taskItem.name}
+          onBlur={(e) => this.props.updateTaskNameById(this.props.task.id, e.target.value)}
+        />
+      );
     }
+
+    return (
+      <span>{taskItem.name}</span>
+    );
   }
 };
 
@@ -43,23 +33,25 @@ class TaskItem extends React.Component {
       task: taskItem,
       toggleCompleted,
       deleteTask,
-      db
     } = this.props;
 
     let taskItemNodeId = "task-name-" + taskItem.id.toString();
 
     return (
       <div className="TaskItem" style={{display: 'flex', justifyContent: 'flex-start'}}>
-        <Checkbox onCheck={() => toggleCompleted(taskItem.id)} checked={taskItem.isCompleted} style={{width: 'auto'}} />
+        <Checkbox 
+          onCheck={() => toggleCompleted(taskItem.id)}
+          checked={taskItem.isCompleted}
+          style={{width: 'auto'}} />
         <div>
-          <span id={taskItemNodeId} onClick={() => { this.action = 'EDIT_TO_DO'; this.forceUpdate(); }}>
+          <span id={taskItemNodeId} onClick={() => { this.props.setAsEditable(taskItem.id) }}>
             <TaskItemName
               task={taskItem}
-              action={this.action}
-              db={db}
-              callback={() => { this.action =''; this.forceUpdate(); }}
+              updateTaskNameById={this.props.updateTaskNameById}
             /></span>
-          <FlatButton label="Delete Task" secondary={true} onTouchTap={() => deleteTask(taskItem.id)} />
+          <FlatButton 
+            label="Delete Task" secondary={true}
+            onTouchTap={() => deleteTask(taskItem.id)} />
         </div>
       </div>
     );
@@ -81,6 +73,13 @@ class TaskList extends React.Component {
         ...snapshot.val(),
         isLoading: false
       });
+    });
+  }
+
+  updateTaskNameById( id, name ) {
+    this.db.update({
+      [`tasks/${id}/name`]: name,
+      [`tasks/${id}/isEditable`]: false,
     });
   }
 
@@ -113,6 +112,12 @@ class TaskList extends React.Component {
     })
   }
 
+  setAsEditable( id ) {
+    this.db.update({
+      [`tasks/${id}/isEditable`]: true 
+    });
+  }
+
   render() {
     return (
       <div>
@@ -138,8 +143,8 @@ class TaskList extends React.Component {
                             toggleCompleted={id => this.toggleCompleted(key)}
                             updateTaskName={e => this.updateTaskName(e, key)}
                             deleteTask={id => this.deleteTask(key)}
-                            state={this.state}
-                            db={this.db}
+                            setAsEditable={id => this.setAsEditable(id)}
+                            updateTaskNameById={(id, name) => this.updateTaskNameById(id, name)}
                           />
                       )
                     }
