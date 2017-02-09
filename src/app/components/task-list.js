@@ -1,9 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-
 import Checkbox from 'material-ui/Checkbox';
 import FlatButton from 'material-ui/FlatButton';
-// import TaskItem from './task-item';
 import { database } from 'firebase';
 
 class TaskItemName extends React.Component {
@@ -41,20 +38,6 @@ class TaskItemName extends React.Component {
 };
 
 class TaskItem extends React.Component {
-  openInput( name, id ) {
-
-    let nodeId = 'task-name-' + id.toString();
-    ReactDOM.render(
-      <input type="text"
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {this.props.updateTaskName(e, id)}}
-        }
-        defaultValue={name}
-        onBlur={(e) => this.props.updateTaskName(e, id)} />,
-      document.getElementById(nodeId)
-    );
-  }
-
   render() {
     const {
       task: taskItem,
