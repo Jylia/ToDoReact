@@ -1,7 +1,87 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+
 import Checkbox from 'material-ui/Checkbox';
-import TaskItem from './task-item';
+import FlatButton from 'material-ui/FlatButton';
+// import TaskItem from './task-item';
 import { database } from 'firebase';
+
+class TaskItemName extends React.Component {
+  render() {
+    const {
+      task: taskItem,
+      action,
+      db
+    } = this.props;
+
+    const updateTaskName = ( e, key ) => {
+      db.update({
+        [`tasks/${key}/name`]: e.target.value
+      });
+      this.props.callback();
+    };
+
+    switch (action) {
+      case 'EDIT_TO_DO':
+        return (
+            <input type="text"
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {updateTaskName(e, taskItem.id);}}
+              }
+              defaultValue={taskItem.name}
+              onBlur={(e) => updateTaskName(e, taskItem.id)}
+            />
+        );
+      default:
+        return (
+          <span>{taskItem.name}</span>
+        );
+    }
+  }
+};
+
+class TaskItem extends React.Component {
+  openInput( name, id ) {
+
+    let nodeId = 'task-name-' + id.toString();
+    ReactDOM.render(
+      <input type="text"
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {this.props.updateTaskName(e, id)}}
+        }
+        defaultValue={name}
+        onBlur={(e) => this.props.updateTaskName(e, id)} />,
+      document.getElementById(nodeId)
+    );
+  }
+
+  render() {
+    const {
+      task: taskItem,
+      toggleCompleted,
+      deleteTask,
+      db
+    } = this.props;
+
+    let taskItemNodeId = "task-name-" + taskItem.id.toString();
+
+    return (
+      <div className="TaskItem" style={{display: 'flex', justifyContent: 'flex-start'}}>
+        <Checkbox onCheck={() => toggleCompleted(taskItem.id)} checked={taskItem.isCompleted} style={{width: 'auto'}} />
+        <div>
+          <span id={taskItemNodeId} onClick={() => { this.action = 'EDIT_TO_DO'; this.forceUpdate(); }}>
+            <TaskItemName
+              task={taskItem}
+              action={this.action}
+              db={db}
+              callback={() => { this.action =''; this.forceUpdate(); }}
+            /></span>
+          <FlatButton label="Delete Task" secondary={true} onTouchTap={() => deleteTask(taskItem.id)} />
+        </div>
+      </div>
+    );
+  }
+}
 
 class TaskList extends React.Component {
   constructor(props) {
@@ -44,12 +124,6 @@ class TaskList extends React.Component {
     });
   }
 
-  updateTaskName( e, key ) {
-    this.db.update({
-      [`tasks/${key}/name`]: e.target.value
-    });
-  }
-
   deleteTask( key ) {
     this.db.update({
       [`tasks/${key}`]: null
@@ -81,6 +155,8 @@ class TaskList extends React.Component {
                             toggleCompleted={id => this.toggleCompleted(key)}
                             updateTaskName={e => this.updateTaskName(e, key)}
                             deleteTask={id => this.deleteTask(key)}
+                            state={this.state}
+                            db={this.db}
                           />
                       )
                     }
