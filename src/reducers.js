@@ -1,13 +1,10 @@
 import { combineReducers } from 'redux';
-
-const initialState = [];
-
-const todos = (state = initialState, action) => {
-  return state;
-};
+import FireduxInstance from './fireduxSettings';
+import todos from './app/reducer';
 
 const mainReducer = combineReducers({
-  todos
+  todos,
+  firedux: FireduxInstance.reducer()
 });
 
 export default mainReducer;

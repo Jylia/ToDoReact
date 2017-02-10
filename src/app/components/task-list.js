@@ -1,81 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
-import FlatButton from 'material-ui/FlatButton';
-import { database } from 'firebase';
-
-class TaskItemName extends React.Component {
-  render() {
-    const {
-      task: taskItem
-    } = this.props;
-
-    if (taskItem.isEditable) {
-      return (
-        <input type="text"
-          onKeyPress={(e) => {
-            if (e.key === 'Enter') {this.props.updateTaskNameById(this.props.task.id, e.target.value)}}
-          }
-          defaultValue={taskItem.name}
-          onBlur={(e) => this.props.updateTaskNameById(this.props.task.id, e.target.value)}
-        />
-      );
-    }
-
-    return (
-      <span>{taskItem.name}</span>
-    );
-  }
-};
-
-class TaskItem extends React.Component {
-  render() {
-    const {
-      task: taskItem,
-      toggleCompleted,
-      deleteTask,
-    } = this.props;
-
-    let taskItemNodeId = "task-name-" + taskItem.id.toString();
-
-    return (
-      <div className="TaskItem" style={{display: 'flex', justifyContent: 'flex-start'}}>
-        <Checkbox 
-          onCheck={() => toggleCompleted(taskItem.id)}
-          checked={taskItem.isCompleted}
-          style={{width: 'auto'}} />
-        <div>
-          <span id={taskItemNodeId} onClick={() => { this.props.setAsEditable(taskItem.id) }}>
-            <TaskItemName
-              task={taskItem}
-              updateTaskNameById={this.props.updateTaskNameById}
-            /></span>
-          <FlatButton 
-            label="Delete Task" secondary={true}
-            onTouchTap={() => deleteTask(taskItem.id)} />
-        </div>
-      </div>
-    );
-  }
-}
+// import Firebase from 'firebase';
+import TaskItem from './task-item';
 
 class TaskList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.db = database().ref();
-    this.state = {
-      isLoading: true
-    };
-  }
-
-  componentDidMount() {
-    this.db.on('value', (snapshot) => {
-      this.setState({
-        ...snapshot.val(),
-        isLoading: false
-      });
-    });
-  }
-
   updateTaskNameById( id, name ) {
     this.db.update({
       [`tasks/${id}/name`]: name,
@@ -83,39 +12,35 @@ class TaskList extends React.Component {
     });
   }
 
-  componentWllUnmount() {
-    this.db.off();
-  }
-
   markAll() {
-    const newAllCompletedState = !this.state.markAllCheckbox;
+    // const newAllCompletedState = !this.state.markAllCheckbox;
 
-    const updates = {
-      markAllCheckbox: newAllCompletedState
-    };
-    Object.entries(this.state.tasks).forEach(([key, task]) => {
-      updates[`tasks/${key}/isCompleted`] = newAllCompletedState;
-    });
+    // const updates = {
+    //   markAllCheckbox: newAllCompletedState
+    // };
+    // Object.entries(this.state.tasks).forEach(([key, task]) => {
+    //   updates[`tasks/${key}/isCompleted`] = newAllCompletedState;
+    // });
 
-    return this.db.update(updates);
+    // return this.db.update(updates);
   }
 
   toggleCompleted(key) {
-    this.db.update({
-      [`tasks/${key}/isCompleted`]: !this.state.tasks[key].isCompleted
-    });
+    // this.db.update({
+    //   [`tasks/${key}/isCompleted`]: !this.state.tasks[key].isCompleted
+    // });
   }
 
   deleteTask( key ) {
-    this.db.update({
-      [`tasks/${key}`]: null
-    })
+    // this.db.update({
+    //   [`tasks/${key}`]: null
+    // })
   }
 
   setAsEditable( id ) {
-    this.db.update({
-      [`tasks/${id}/isEditable`]: true 
-    });
+    // this.db.update({
+    //   [`tasks/${id}/isEditable`]: true 
+    // });
   }
 
   render() {
@@ -124,22 +49,22 @@ class TaskList extends React.Component {
         <div className="TaskList">
           <h2>Tasks for Today</h2>
           {
-            this.state.isLoading ? (
+            this.props.isLoading ? (
               <div>Loading data...</div>
               ) : (
                 <div>
                   <Checkbox
-                    label={`Mark All as ${this.state.markAllCheckbox ? 'Uncompleted' : 'Completed'}`}
+                    label={`Mark All as ${this.props.markAllCheckbox ? 'Uncompleted' : 'Completed'}`}
                     onCheck={() => this.markAll()}
-                    checked={this.state.markAllCheckbox}
+                    checked={this.props.markAllCheckbox}
                   />
                   <div>
                     {
-                      Object.entries(this.state.tasks).map(
+                      Object.entries(this.props.tasks).map(
                         ([key, taskItem]) => 
                           <TaskItem
                             key={key}
-                            task={taskItem}
+                            taskId={taskItem.id}
                             toggleCompleted={id => this.toggleCompleted(key)}
                             updateTaskName={e => this.updateTaskName(e, key)}
                             deleteTask={id => this.deleteTask(key)}
@@ -158,4 +83,18 @@ class TaskList extends React.Component {
   }
 }
 
-export default TaskList;
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    tasks: state.todos,
+    markAllCheckbox: false
+  }
+}
+
+const mapDispatchToProps = () => {
+  return {
+
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskList);
