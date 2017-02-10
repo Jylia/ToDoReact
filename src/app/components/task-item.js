@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 import FlatButton from 'material-ui/FlatButton';
 import TaskItemName from './task-name';
-import { markTaskAsDone } from '../actions';
+import {
+  markTaskAsDone,
+  deleteTask,
+  setIsEditableTask
+} from '../actions';
 
 class TaskItem extends React.Component {
   render() {
@@ -11,6 +15,7 @@ class TaskItem extends React.Component {
       task: taskItem,
       toggleCompleted,
       deleteTask,
+      setIsEditable
     } = this.props;
 
     let taskItemNodeId = "task-name-" + taskItem.id.toString();
@@ -22,9 +27,9 @@ class TaskItem extends React.Component {
           checked={taskItem.isCompleted}
           style={{width: 'auto'}} />
         <div>
-          <span id={taskItemNodeId} onClick={() => { this.props.setAsEditable(taskItem.id) }}>
+          <span id={taskItemNodeId} onClick={() => { setIsEditable(taskItem.id) }}>
             <TaskItemName
-              task={taskItem}
+              taskItem={taskItem}
               updateTaskNameById={this.props.updateTaskNameById}
             /></span>
           <FlatButton 
@@ -46,10 +51,16 @@ const mapDispatchToProps = (dispatch) => {
   return {
     toggleCompleted (taskId) {
       const action = markTaskAsDone(taskId);
-      console.log(action);
       dispatch(action);
     },
-    deleteTask () {} 
+    deleteTask (taskId) {
+      const action = deleteTask(taskId);
+      dispatch(action);
+    },
+    setIsEditable (taskId) {
+      const action = setIsEditableTask(taskId);
+      dispatch(action);
+    }
   }
 }
 

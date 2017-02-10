@@ -1,4 +1,9 @@
-import { markTodoAsDone } from './constants';
+import { 
+  markTodoAsDone,
+  deleteTodo,
+  setIsEditableTodo,
+  setIsNotEditableTodo
+} from './constants';
 
 const initialState = {
   2: {
@@ -28,11 +33,29 @@ const initialState = {
 };
 
 export default function todosReducer(state = initialState, action) {
+  const newObj = Object.assign({}, state);
   switch (action.type) {
     case markTodoAsDone:
-      const newObj = Object.assign({}, state);
       newObj[action.payload].isCompleted = !state[action.payload].isCompleted;
+
       return newObj;
+
+    case deleteTodo:
+      delete newObj[action.payload];
+
+      return newObj;
+
+    case setIsEditableTodo:
+      newObj[action.payload].isEditable = true;
+
+      return newObj;
+
+    case setIsNotEditableTodo:
+      newObj[action.payload.taskId].isEditable = false;
+      newObj[action.payload.taskId].name = action.payload.name;
+
+      return newObj;
+
     default:
       return state;
   }
