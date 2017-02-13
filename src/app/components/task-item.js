@@ -12,7 +12,7 @@ import {
 class TaskItem extends React.Component {
   render() {
     const {
-      task: taskItem,
+      taskItem,
       toggleCompleted,
       deleteTask,
       setIsEditable
@@ -34,7 +34,8 @@ class TaskItem extends React.Component {
             /></span>
           <FlatButton 
             label="Delete Task" secondary={true}
-            onTouchTap={() => deleteTask(taskItem.id)} />
+            onTouchTap={() => deleteTask(taskItem.id)}
+          />
         </div>
       </div>
     );
@@ -43,7 +44,7 @@ class TaskItem extends React.Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    task: state.todos[props.taskId],
+    task: state.todos.tasks[props.taskId],
   }
 }
 

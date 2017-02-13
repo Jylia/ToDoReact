@@ -2,7 +2,9 @@ import {
   markTodoAsDone,
   deleteTodo,
   setIsEditableTodo,
-  setIsNotEditableTodo
+  editTodo,
+  markAllAsDone,
+  createTodo
 } from './constants';
 
 export function markTaskAsDone(taskId) {
@@ -26,12 +28,28 @@ export function setIsEditableTask(taskId) {
   }
 }
 
-export function setIsNotEditableTask(taskId, name) {
+export function editTask(taskId, name) {
   return {
-    type: setIsNotEditableTodo,
+    type: editTodo,
     payload: {
       taskId,
       name
     }
   }
 }
+
+export function markAllTasksAsDone() {
+  return {
+    type: markAllAsDone
+  }
+}
+
+export function createTask(name) {
+  return {
+    type: createTodo,
+    payload: {
+      name
+    }
+  }
+}
+

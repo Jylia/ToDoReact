@@ -14,7 +14,7 @@ const store = configureStore();
 
 FireduxInstance.watch('/')
   .then((snapshot) => {
-    console.log(store.getState().firedux.data);
+    // console.log(store.getState().firedux.data);
 
     reactTapEventPlugin();
 

@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  setIsNotEditableTask
+  editTask
 } from '../actions';
 
 class TaskItemName extends React.Component {
   render() {
     const {
       taskItem,
-      setIsNotEditable
+      edit
     } = this.props;
 
     if (taskItem.isEditable) {
@@ -16,10 +16,10 @@ class TaskItemName extends React.Component {
         <input type="text"
           autoFocus
           onKeyPress={(e) => {
-            if (e.key === 'Enter') {setIsNotEditable(taskItem.id, e.target.value)}}
+            if (e.key === 'Enter') {edit(taskItem.id, e.target.value)}}
           }
           defaultValue={taskItem.name}
-          onBlur={(e) => {setIsNotEditable(taskItem.id, e.target.value)}}
+          onBlur={(e) => {edit(taskItem.id, e.target.value)}}
         />
       );
     }
@@ -38,8 +38,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setIsNotEditable (taskId, name) {
-      const action = setIsNotEditableTask(taskId, name);
+    edit (taskId, name) {
+      const action = editTask(taskId, name);
       dispatch(action);
     }
   }

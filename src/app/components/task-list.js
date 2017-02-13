@@ -3,47 +3,18 @@ import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 // import Firebase from 'firebase';
 import TaskItem from './task-item';
+import NewTaskForm from './new-task-form';
+import {
+  markAllTasksAsDone
+} from '../actions';
+
 
 class TaskList extends React.Component {
-  updateTaskNameById( id, name ) {
-    this.db.update({
-      [`tasks/${id}/name`]: name,
-      [`tasks/${id}/isEditable`]: false,
-    });
-  }
-
-  markAll() {
-    // const newAllCompletedState = !this.state.markAllCheckbox;
-
-    // const updates = {
-    //   markAllCheckbox: newAllCompletedState
-    // };
-    // Object.entries(this.state.tasks).forEach(([key, task]) => {
-    //   updates[`tasks/${key}/isCompleted`] = newAllCompletedState;
-    // });
-
-    // return this.db.update(updates);
-  }
-
-  toggleCompleted(key) {
-    // this.db.update({
-    //   [`tasks/${key}/isCompleted`]: !this.state.tasks[key].isCompleted
-    // });
-  }
-
-  deleteTask( key ) {
-    // this.db.update({
-    //   [`tasks/${key}`]: null
-    // })
-  }
-
-  setAsEditable( id ) {
-    // this.db.update({
-    //   [`tasks/${id}/isEditable`]: true 
-    // });
-  }
-
   render() {
+    const {
+      markAllAsDone
+    } = this.props;
+
     return (
       <div>
         <div className="TaskList">
@@ -54,23 +25,25 @@ class TaskList extends React.Component {
               ) : (
                 <div>
                   <Checkbox
-                    label={`Mark All as ${this.props.markAllCheckbox ? 'Uncompleted' : 'Completed'}`}
-                    onCheck={() => this.markAll()}
-                    checked={this.props.markAllCheckbox}
+                      label={`Mark All as ${this.props.isAllMarkedAsDone ? 'Uncompleted' : 'Completed'}`}
+                      onCheck={() => markAllAsDone(!this.props.isAllMarkedAsDone)}
+                      checked={this.props.isAllMarkedAsDone}
                   />
+                  <NewTaskForm />
                   <div>
                     {
                       Object.entries(this.props.tasks).map(
-                        ([key, taskItem]) => 
-                          <TaskItem
-                            key={key}
-                            taskId={taskItem.id}
-                            toggleCompleted={id => this.toggleCompleted(key)}
-                            updateTaskName={e => this.updateTaskName(e, key)}
-                            deleteTask={id => this.deleteTask(key)}
-                            setAsEditable={id => this.setAsEditable(id)}
-                            updateTaskNameById={(id, name) => this.updateTaskNameById(id, name)}
-                          />
+                        ([key, taskItem]) =>
+                        <TaskItem
+                          key={key}
+                          taskItem={taskItem}
+                          taskId={taskItem.id}
+                          toggleCompleted={id => this.toggleCompleted(key)}
+                          updateTaskName={e => this.updateTaskName(e, key)}
+                          deleteTask={id => this.deleteTask(key)}
+                          setAsEditable={id => this.setAsEditable(id)}
+                          updateTaskNameById={(id, name) => this.updateTaskNameById(id, name)}
+                        />
                       )
                     }
                   </div>
@@ -84,16 +57,18 @@ class TaskList extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
-    tasks: state.todos,
-    markAllCheckbox: false
+    tasks: state.todos.tasks,
+    isAllMarkedAsDone: state.todos.isAllMarkedAsDone
   }
 }
 
-const mapDispatchToProps = () => {
+const mapDispatchToProps = (dispatch) => {
   return {
-
+    markAllAsDone (isAllMarkedAsDone) {
+      const action = markAllTasksAsDone(isAllMarkedAsDone);
+      dispatch(action);
+    }
   }
 }
 
