@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import { ListItem } from 'material-ui/List';
 import TaskItemName from './task-name';
 import {
   markTaskAsDone,
@@ -18,25 +19,30 @@ class TaskItem extends React.Component {
       setIsEditable
     } = this.props;
 
-    let taskItemNodeId = "task-name-" + taskItem.id.toString();
-
     return (
-      <div className="TaskItem" style={{display: 'flex', justifyContent: 'flex-start'}}>
-        <Checkbox 
-          onCheck={() => toggleCompleted(taskItem.id)}
-          checked={taskItem.isCompleted}
-          style={{width: 'auto'}} />
-        <div>
-          <span id={taskItemNodeId} onClick={() => { setIsEditable(taskItem.id) }}>
-            <TaskItemName
-              taskItem={taskItem}
-              updateTaskNameById={this.props.updateTaskNameById}
-            /></span>
-          <FlatButton 
-            label="Delete Task" secondary={true}
-            onTouchTap={() => deleteTask(taskItem.id)}
-          />
-        </div>
+      <div className="TaskItem">
+        <ListItem>
+          <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <div>
+              <Checkbox
+                onCheck={() => toggleCompleted(taskItem.id)}
+                checked={taskItem.isCompleted}
+              />
+            </div>
+            <div onClick={() => { setIsEditable(taskItem.id) }} style={{flexGrow: 2, flexBasis: '100%'}}>
+              <TaskItemName
+                taskItem={taskItem}
+                updateTaskNameById={this.props.updateTaskNameById}
+              />
+            </div>
+            <div style={{whiteSpace: 'nowrap'}}>
+              <RaisedButton 
+                label="Delete Task" secondary={true}
+                onTouchTap={() => deleteTask(taskItem.id)}
+              />
+            </div>
+          </div>
+        </ListItem>
       </div>
     );
   }

@@ -1,12 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
+import { List } from 'material-ui/List';
 // import Firebase from 'firebase';
 import TaskItem from './task-item';
 import NewTaskForm from './new-task-form';
 import {
   markAllTasksAsDone
 } from '../actions';
+
+import './styles.css';
 
 
 class TaskList extends React.Component {
@@ -18,19 +21,22 @@ class TaskList extends React.Component {
     return (
       <div>
         <div className="TaskList">
-          <h2>Tasks for Today</h2>
           {
             this.props.isLoading ? (
               <div>Loading data...</div>
               ) : (
-                <div>
+                <div className="container">
                   <Checkbox
                       label={`Mark All as ${this.props.isAllMarkedAsDone ? 'Uncompleted' : 'Completed'}`}
                       onCheck={() => markAllAsDone(!this.props.isAllMarkedAsDone)}
                       checked={this.props.isAllMarkedAsDone}
                   />
-                  <NewTaskForm />
                   <div>
+                  <div>
+                    <NewTaskForm />
+                  </div>
+                  <List>
+                    <h3>Tasks for Today</h3>
                     {
                       Object.entries(this.props.tasks).map(
                         ([key, taskItem]) =>
@@ -46,6 +52,7 @@ class TaskList extends React.Component {
                         />
                       )
                     }
+                  </List>
                   </div>
                 </div>
               )

@@ -1,29 +1,45 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 import {
   createTask
 } from '../actions';
 
 class NewTaskForm extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      text: ''
+    };
+  }
+
   render() {
     const {
       create
     } = this.props;
 
     return (
-      <div>
-        <input type="text"
-          autoFocus
-          ref={ node => {this.input = node;}}
-        />
-        <FlatButton 
-          label="Add New Task" secondary={false}
-          onTouchTap={() => {
-            create(this.input.value);
-            this.input.value = '';
-          }}
-        />
+      <div style={{display: 'flex', justifyContent: 'space-between'}}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            create(this.state.text);
+            this.setState({text: ''})
+          }} >
+          <TextField
+            autoFocus
+            hintText="Add new task name"
+            value={this.state.text}
+            onChange={(e) => this.setState({text: e.target.value})}
+          />
+          <div>
+            <RaisedButton
+              label="Add New Task" primary={true}
+              type="submit"
+            />
+          </div>
+        </form>
       </div>
     );
   }

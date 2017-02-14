@@ -73,8 +73,9 @@ export default function todosReducer(state = initialState, action) {
 
     case createTodo:
       var idsArray = [];
-      for (var key in newTasksObj) {
-        idsArray.push(parseInt(key, 10));
+      for (var objKey in newTasksObj) {
+        if (!newTasksObj.hasOwnProperty(objKey)) continue;
+        idsArray.push(parseInt(objKey, 10));
       }
       var newId = Math.max.apply(null, idsArray) + 1;
       newTasksObj[newId] = {
