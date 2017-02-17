@@ -4,7 +4,8 @@ import {
   setIsEditableTodo,
   editTodo,
   markAllAsDone,
-  createTodo
+  createTodo,
+  filterTodos
 } from './constants';
 
 const initialState = {
@@ -34,8 +35,11 @@ const initialState = {
       "name" : "the last task for this list"
     }
   },
+  visibilityFilter: 'ALL',
   isAllMarkedAsDone: false
 };
+
+console.log(window.location);
 
 export default function todosReducer(state = initialState, action) {
   var newObj = Object.assign({}, state);
@@ -86,6 +90,21 @@ export default function todosReducer(state = initialState, action) {
       }
       newObj.tasks = newTasksObj;
       return newObj;
+
+    case filterTodos:
+      switch(action.payload.filterType) {
+        case 'ALL':
+          newObj.visibilityFilter = 'ALL';
+          return newObj;
+        case 'COMPLETED':
+          newObj.visibilityFilter = 'COMPLETED';
+          return newObj;
+        case 'UNCOMPLETED':
+          newObj.visibilityFilter = 'UNCOMPLETED';
+          return newObj;
+        default:
+          return state;
+      }
 
     default:
       return state;

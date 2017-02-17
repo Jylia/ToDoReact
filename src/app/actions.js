@@ -4,7 +4,8 @@ import {
   setIsEditableTodo,
   editTodo,
   markAllAsDone,
-  createTodo
+  createTodo,
+  filterTodos
 } from './constants';
 
 export function markTaskAsDone(taskId) {
@@ -49,6 +50,15 @@ export function createTask(name) {
     type: createTodo,
     payload: {
       name
+    }
+  }
+}
+
+export function filterTasks(filterType) {
+  return {
+    type: filterTodos,
+    payload: {
+      filterType
     }
   }
 }

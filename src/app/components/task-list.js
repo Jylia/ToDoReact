@@ -2,11 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 import { List } from 'material-ui/List';
+import RaisedButton from 'material-ui/RaisedButton';
 // import Firebase from 'firebase';
 import TaskItem from './task-item';
 import NewTaskForm from './new-task-form';
 import {
-  markAllTasksAsDone
+  markAllTasksAsDone,
+  filterTasks
 } from '../actions';
 
 import './styles.css';
@@ -15,8 +17,13 @@ import './styles.css';
 class TaskList extends React.Component {
   render() {
     const {
-      markAllAsDone
+      markAllAsDone,
+      filterTodos
     } = this.props;
+
+    const style = {
+      margin: 12,
+    };
 
     return (
       <div>
@@ -26,6 +33,26 @@ class TaskList extends React.Component {
               <div>Loading data...</div>
               ) : (
                 <div className="container">
+                  <div>
+                    <RaisedButton
+                      label="All"
+                      disabled={this.props.visibilityFilter === 'ALL'}
+                      style={style}
+                      onTouchTap={() => filterTodos('ALL')}
+                    />
+                    <RaisedButton
+                      label="Completed"
+                      disabled={this.props.visibilityFilter === 'COMPLETED'}
+                      style={style}
+                      onTouchTap={() => filterTodos('COMPLETED')}
+                    />
+                    <RaisedButton
+                      label="Uncompleted"
+                      disabled={this.props.visibilityFilter === 'UNCOMPLETED'}
+                      style={style}
+                      onTouchTap={() => filterTodos('UNCOMPLETED')}
+                    />
+                  </div>
                   <Checkbox
                       label={`Mark All as ${this.props.isAllMarkedAsDone ? 'Uncompleted' : 'Completed'}`}
                       onCheck={() => markAllAsDone(!this.props.isAllMarkedAsDone)}
@@ -64,9 +91,30 @@ class TaskList extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  const visibilityFilter = state.todos.visibilityFilter;
   return {
-    tasks: state.todos.tasks,
-    isAllMarkedAsDone: state.todos.isAllMarkedAsDone
+    tasks: Object.entries(state.todos.tasks).reduce((acc, [key, taskItem]) => {
+      switch (visibilityFilter) {
+        case 'ALL':
+          acc[key] = taskItem;
+          break;
+        case 'COMPLETED': 
+          if (taskItem.isCompleted) {
+            acc[key] = taskItem;
+          }
+          break;
+        case 'UNCOMPLETED':
+          if (!taskItem.isCompleted) {
+            acc[key] = taskItem;
+          }
+          break;
+        default:
+          break;
+      }
+      return acc;
+    }, {}),
+    isAllMarkedAsDone: state.todos.isAllMarkedAsDone,
+    visibilityFilter: visibilityFilter
   }
 }
 
@@ -74,6 +122,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
     markAllAsDone (isAllMarkedAsDone) {
       const action = markAllTasksAsDone(isAllMarkedAsDone);
+      dispatch(action);
+    },
+    filterTodos (filterType) {
+      const action = filterTasks(filterType);
       dispatch(action);
     }
   }
