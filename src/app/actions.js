@@ -95,7 +95,6 @@ export function fetchTodos() {
       }).then(checkStatus)
         .then(parseJSON)
         .then((response) => {
-          console.log(response);
           dispatch(setDataToStore(response));
         });
   }

@@ -32,7 +32,7 @@ class TaskItemName extends React.Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    task: state.todo[props.taskId],
+    task: state.todos[props.taskId],
   }
 }
 

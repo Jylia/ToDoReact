@@ -97,7 +97,7 @@ class TaskList extends React.Component {
 const mapStateToProps = (state) => {
   const visibilityFilter = state.filter;
   return {
-    tasks: Object.entries(state.todo.tasks).reduce((acc, [key, taskItem]) => {
+    tasks: Object.entries(state.todos.tasks).reduce((acc, [key, taskItem]) => {
       switch (visibilityFilter) {
         case 'ALL':
           acc[key] = taskItem;
@@ -117,8 +117,8 @@ const mapStateToProps = (state) => {
       }
       return acc;
     }, {}),
-    isLoading: state.todo.isLoading,
-    isAllMarkedAsDone: state.todo.isAllMarkedAsDone,
+    isLoading: state.todos.loading.isLoading,
+    isAllMarkedAsDone: state.todos.allMarkedAsDone.isAllMarkedAsDone,
     visibilityFilter: visibilityFilter
   }
 }
