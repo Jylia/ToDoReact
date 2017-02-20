@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 import FireduxInstance from './fireduxSettings';
-import todoReducer from './app/todoReducer';
-import filterReducer from './app/filterReducer';
+import todo from './app/todoReducer';
+import filter from './app/filterReducer';
 
 const mainReducer = combineReducers({
-  todoReducer,
-  filterReducer,
+  todo,
+  filter,
   firedux: FireduxInstance.reducer()
 });
 

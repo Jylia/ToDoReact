@@ -5,3 +5,4 @@ export const editTodo = 'EDIT_TODO';
 export const markAllAsDone = 'MARK_ALL_AS_DONE';
 export const createTodo = 'CREATE_TODO';
 export const filterTodos = 'FILTER_TODOS';
+export const setData = 'SET_DATA';

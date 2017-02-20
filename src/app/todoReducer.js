@@ -4,36 +4,13 @@ import {
   setIsEditableTodo,
   editTodo,
   markAllAsDone,
-  createTodo
+  createTodo,
+  setData
 } from './constants';
 
 const initialState = {
-  tasks: {
-    2: {
-      "id" : 2,
-      "isCompleted" : true,
-      "isEditable" : false,
-      "name" : "test task"
-    },
-    3: {
-      "id" : 3,
-      "isCompleted" : false,
-      "isEditable" : false,
-      "name" : "good task :))))"
-    },
-    4: {
-      "id" : 4,
-      "isCompleted" : true,
-      "isEditable" : false,
-      "name" : "Julia tests this ***"
-    },
-    5: {
-      "id" : 5,
-      "isCompleted" : false,
-      "isEditable" : false,
-      "name" : "the last task for this list"
-    }
-  },
+  tasks: {},
+  isLoading: true,
   isAllMarkedAsDone: false
 };
 
@@ -87,6 +64,15 @@ export default function todosReducer(state = initialState, action) {
         "name" : action.payload.name
       }
       newObj.tasks = newTasksObj;
+      return newObj;
+
+    case setData:
+      action.payload.entities.forEach((item) => {
+        newTasksObj[item.id] = item;
+      });
+
+      newObj.tasks = newTasksObj;
+      newObj.isLoading = false;
       return newObj;
 
     default:

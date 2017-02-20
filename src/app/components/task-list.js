@@ -3,18 +3,22 @@ import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 import { List } from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
-// import Firebase from 'firebase';
 import TaskItem from './task-item';
 import NewTaskForm from './new-task-form';
 import {
   markAllTasksAsDone,
-  filterTasks
+  filterTasks,
+  fetchTodos
 } from '../actions';
 
 import './styles.css';
 
 
 class TaskList extends React.Component {
+  componentDidMount() {
+    this.props.fetchData();
+  }
+
   render() {
     const {
       markAllAsDone,
@@ -91,9 +95,9 @@ class TaskList extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const visibilityFilter = state.filterReducer;
+  const visibilityFilter = state.filter;
   return {
-    tasks: Object.entries(state.todoReducer.tasks).reduce((acc, [key, taskItem]) => {
+    tasks: Object.entries(state.todo.tasks).reduce((acc, [key, taskItem]) => {
       switch (visibilityFilter) {
         case 'ALL':
           acc[key] = taskItem;
@@ -113,7 +117,8 @@ const mapStateToProps = (state) => {
       }
       return acc;
     }, {}),
-    isAllMarkedAsDone: state.todoReducer.isAllMarkedAsDone,
+    isLoading: state.todo.isLoading,
+    isAllMarkedAsDone: state.todo.isAllMarkedAsDone,
     visibilityFilter: visibilityFilter
   }
 }
@@ -127,6 +132,9 @@ const mapDispatchToProps = (dispatch) => {
     filterTodos (filterType) {
       const action = filterTasks(filterType);
       dispatch(action);
+    },
+    fetchData () {
+      dispatch(fetchTodos());
     }
   }
 }
