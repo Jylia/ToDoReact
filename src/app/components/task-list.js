@@ -59,8 +59,9 @@ class TaskList extends React.Component {
                   </div>
                   <Checkbox
                       label={`Mark All as ${this.props.isAllMarkedAsDone ? 'Uncompleted' : 'Completed'}`}
-                      onCheck={() => markAllAsDone(!this.props.isAllMarkedAsDone)}
-                      checked={this.props.isAllMarkedAsDone}
+                      onCheck={() => markAllAsDone(this.props.isAllMarkedAsDone)}
+                      checked={!!Object.keys(this.props.tasks).length &&  this.props.isAllMarkedAsDone}
+                      disabled={!Object.keys(this.props.tasks).length}
                   />
                   <div>
                   <div>
@@ -118,7 +119,9 @@ const mapStateToProps = (state) => {
       return acc;
     }, {}),
     isLoading: state.todos.loading.isLoading,
-    isAllMarkedAsDone: state.todos.allMarkedAsDone.isAllMarkedAsDone,
+    isAllMarkedAsDone: Object.entries(state.todos.tasks).map(([key, taskItem]) => {
+      return taskItem.isCompleted;
+    }).every(isCompleted => isCompleted),
     visibilityFilter: visibilityFilter
   }
 }

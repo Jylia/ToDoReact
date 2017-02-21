@@ -40,9 +40,12 @@ export function editTask(taskId, name) {
   }
 }
 
-export function markAllTasksAsDone() {
+export function markAllTasksAsDone(isAllMarkedAsDone) {
   return {
-    type: markAllAsDone
+    type: markAllAsDone,
+    payload: {
+      isAllMarkedAsDone
+    }
   }
 }
 
