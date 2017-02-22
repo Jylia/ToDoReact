@@ -5,16 +5,15 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { ListItem } from 'material-ui/List';
 import TaskItemName from './task-name';
 import {
-  markTaskAsDone,
-  deleteTask,
-  setIsEditableTask
+  updateTask,
+  deleteTask
 } from '../actions';
 
 class TaskItem extends React.Component {
   render() {
     const {
       taskItem,
-      toggleCompleted,
+      edit,
       deleteTask,
       setIsEditable
     } = this.props;
@@ -25,11 +24,11 @@ class TaskItem extends React.Component {
           <div style={{display: 'flex', justifyContent: 'space-between'}}>
             <div>
               <Checkbox
-                onCheck={() => toggleCompleted(taskItem.id)}
+                onCheck={() => edit(taskItem.id, taskItem)}
                 checked={taskItem.isCompleted}
               />
             </div>
-            <div onClick={() => { setIsEditable(taskItem.id) }} style={{flexGrow: 2, flexBasis: '100%'}}>
+            <div onClick={() => { setIsEditable(taskItem.id, taskItem) }} style={{flexGrow: 2, flexBasis: '100%'}}>
               <TaskItemName
                 taskItem={taskItem}
                 updateTaskNameById={this.props.updateTaskNameById}
@@ -56,16 +55,19 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleCompleted (taskId) {
-      const action = markTaskAsDone(taskId);
+    edit (taskId, taskObj) {
+      taskObj.isEditable = false;
+      taskObj.isCompleted = !taskObj.isCompleted;
+      const action = updateTask(taskId, taskObj);
       dispatch(action);
     },
     deleteTask (taskId) {
       const action = deleteTask(taskId);
       dispatch(action);
     },
-    setIsEditable (taskId) {
-      const action = setIsEditableTask(taskId);
+    setIsEditable (taskId, taskObj) {
+      taskObj.isEditable = true;
+      const action = updateTask(taskId, taskObj);
       dispatch(action);
     }
   }

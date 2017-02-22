@@ -3,9 +3,9 @@ import {
   markTodoAsDone,
   deleteTodo,
   setIsEditableTodo,
-  editTodo,
   createTodo,
   setData,
+  setItem,
   markAllAsDone
 } from '../constants';
 
@@ -34,25 +34,6 @@ export default function todosReducer(state = initialTodosState, action) {
     case deleteTodo:
       return _.omit(state, action.payload);
 
-    case setIsEditableTodo:
-      return {
-        ...state,
-        [action.payload]: {
-          ...state[action.payload],
-          isEditable: true
-        }
-      };
-
-    case editTodo:
-      return {
-        ...state,
-        [action.payload]: {
-          ...state[action.payload],
-          isEditable: false,
-          name: action.payload.name,
-        }
-      };
-
     case createTodo:
       var idsArray = [];
       for (var objKey in state) {
@@ -75,6 +56,12 @@ export default function todosReducer(state = initialTodosState, action) {
         ...acc,
         [item.id]: item,
       }), {});
+
+    case setItem:
+      return {
+        ...state,
+        [action.payload.id]: action.payload
+      };
 
     default:
       return state;

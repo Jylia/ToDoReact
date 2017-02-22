@@ -2,11 +2,11 @@ import {
   markTodoAsDone,
   deleteTodo,
   setIsEditableTodo,
-  editTodo,
   markAllAsDone,
   createTodo,
   filterTodos,
-  setData
+  setData,
+  setItem
 } from './constants';
 
 export function markTaskAsDone(taskId) {
@@ -20,23 +20,6 @@ export function deleteTask(taskId) {
   return {
     type: deleteTodo,
     payload: taskId
-  }
-}
-
-export function setIsEditableTask(taskId) {
-  return {
-    type: setIsEditableTodo,
-    payload: taskId
-  }
-}
-
-export function editTask(taskId, name) {
-  return {
-    type: editTodo,
-    payload: {
-      taskId,
-      name
-    }
   }
 }
 
@@ -91,6 +74,13 @@ export function setDataToStore(entities) {
   }
 }
 
+export function setItemToStore(entity) {
+  return {
+    type: setItem,
+    payload: entity
+  }
+}
+
 export function fetchTodos() {
   return (dispatch) => {
     return fetch(`api/v1/tasks.json`, {
@@ -100,5 +90,23 @@ export function fetchTodos() {
         .then((response) => {
           dispatch(setDataToStore(response));
         });
+  }
+}
+
+export function updateTask(taskId, taskObj) {
+  return (dispatch) => {
+    return fetch(`api/v1/tasks/${taskId}`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(taskObj),
+      method: 'PUT'
+    }).then(checkStatus)
+      .then(parseJSON)
+      .then((response) => {
+        console.log('????', response.isEditable)
+        dispatch(setItemToStore(response));
+      });
   }
 }
