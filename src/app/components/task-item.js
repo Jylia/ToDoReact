@@ -6,17 +6,30 @@ import { ListItem } from 'material-ui/List';
 import TaskItemName from './task-name';
 import {
   updateTask,
-  deleteTask
+  deleteTask,
+  setTaskIsEditable
+
 } from '../actions';
 
 class TaskItem extends React.Component {
   render() {
     const {
       taskItem,
-      edit,
       deleteTask,
-      setIsEditable
+      setIsEditable,
+      edit,
     } = this.props;
+
+    // function prepareObjCompletedToggle(taskItem) {
+    //   taskItem.isEditable = false;
+    //   taskItem.isCompleted = !taskItem.isCompleted;
+    //   return taskItem;
+    // }
+
+    // function prepareObjEditableSet(taskItem) {
+    //   taskItem.isEditable = true;
+    //   return taskItem;
+    // }
 
     return (
       <div className="TaskItem">
@@ -56,18 +69,16 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     edit (taskId, taskObj) {
-      taskObj.isEditable = false;
       taskObj.isCompleted = !taskObj.isCompleted;
       const action = updateTask(taskId, taskObj);
       dispatch(action);
     },
-    deleteTask (taskId) {
-      const action = deleteTask(taskId);
+    setIsEditable (taskId, taskObj) {
+      const action = setTaskIsEditable(taskId, taskObj);
       dispatch(action);
     },
-    setIsEditable (taskId, taskObj) {
-      taskObj.isEditable = true;
-      const action = updateTask(taskId, taskObj);
+    deleteTask (taskId) {
+      const action = deleteTask(taskId);
       dispatch(action);
     }
   }

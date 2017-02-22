@@ -1,7 +1,7 @@
 import { 
   markTodoAsDone,
   deleteTodo,
-  setIsEditableTodo,
+  setIsEditable,
   markAllAsDone,
   createTodo,
   filterTodos,
@@ -105,7 +105,23 @@ export function updateTask(taskId, taskObj) {
     }).then(checkStatus)
       .then(parseJSON)
       .then((response) => {
-        console.log('????', response.isEditable)
+        dispatch(setItemToStore(response));
+      });
+  }
+}
+
+export function setTaskIsEditable(taskId, taskObj) {
+  return (dispatch) => {
+    return fetch(`api/v1/tasks/${taskId}/setIsEditable`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(taskObj),
+      method: 'PUT'
+    }).then(checkStatus)
+      .then(parseJSON)
+      .then((response) => {
         dispatch(setItemToStore(response));
       });
   }
