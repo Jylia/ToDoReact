@@ -6,8 +6,7 @@ import { ListItem } from 'material-ui/List';
 import TaskItemName from './task-name';
 import {
   updateTask,
-  deleteTask,
-  setTaskIsEditable
+  deleteTask
 
 } from '../actions';
 
@@ -16,20 +15,14 @@ class TaskItem extends React.Component {
     const {
       taskItem,
       deleteTask,
-      setIsEditable,
-      edit,
+      edit
     } = this.props;
 
-    // function prepareObjCompletedToggle(taskItem) {
-    //   taskItem.isEditable = false;
-    //   taskItem.isCompleted = !taskItem.isCompleted;
-    //   return taskItem;
-    // }
-
-    // function prepareObjEditableSet(taskItem) {
-    //   taskItem.isEditable = true;
-    //   return taskItem;
-    // }
+    function prepareObjCompletedToggle(taskItem) {
+      taskItem.isEditable = false;
+      taskItem.isCompleted = !taskItem.isCompleted;
+      return taskItem;
+    }
 
     return (
       <div className="TaskItem">
@@ -37,11 +30,11 @@ class TaskItem extends React.Component {
           <div style={{display: 'flex', justifyContent: 'space-between'}}>
             <div>
               <Checkbox
-                onCheck={() => edit(taskItem.id, taskItem)}
+                onCheck={() => edit(taskItem.id, prepareObjCompletedToggle(taskItem))}
                 checked={taskItem.isCompleted}
               />
             </div>
-            <div onClick={() => { setIsEditable(taskItem.id, taskItem) }} style={{flexGrow: 2, flexBasis: '100%'}}>
+            <div onTouchTap={() => { edit(taskItem.id, taskItem, { shoudBeEditable: true}) }} style={{flexGrow: 2, flexBasis: '100%'}}>
               <TaskItemName
                 taskItem={taskItem}
                 updateTaskNameById={this.props.updateTaskNameById}
@@ -68,13 +61,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    edit (taskId, taskObj) {
-      taskObj.isCompleted = !taskObj.isCompleted;
-      const action = updateTask(taskId, taskObj);
-      dispatch(action);
-    },
-    setIsEditable (taskId, taskObj) {
-      const action = setTaskIsEditable(taskId, taskObj);
+    edit (taskId, taskObj, options) {
+      const action = updateTask(taskId, taskObj, options);
       dispatch(action);
     },
     deleteTask (taskId) {

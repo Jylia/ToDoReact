@@ -1,7 +1,6 @@
 import { 
   markTodoAsDone,
   deleteTodo,
-  setIsEditable,
   markAllAsDone,
   createTodo,
   filterTodos,
@@ -93,26 +92,13 @@ export function fetchTodos() {
   }
 }
 
-export function updateTask(taskId, taskObj) {
-  return (dispatch) => {
-    return fetch(`api/v1/tasks/${taskId}`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(taskObj),
-      method: 'PUT'
-    }).then(checkStatus)
-      .then(parseJSON)
-      .then((response) => {
-        dispatch(setItemToStore(response));
-      });
+export function updateTask(taskId, taskObj, options) {
+  let fetchUrl = `api/v1/tasks/${taskId}`;
+  if (options && options.shoudBeEditable) {
+    fetchUrl = `api/v1/tasks/${taskId}/setIsEditable`;
   }
-}
-
-export function setTaskIsEditable(taskId, taskObj) {
   return (dispatch) => {
-    return fetch(`api/v1/tasks/${taskId}/setIsEditable`, {
+      return fetch(fetchUrl, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
