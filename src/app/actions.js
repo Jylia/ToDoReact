@@ -1,18 +1,8 @@
 import { 
-  createTodo,
   filterTodos,
   setData,
   setItem
 } from './constants';
-
-export function createTask(name) {
-  return {
-    type: createTodo,
-    payload: {
-      name
-    }
-  }
-}
 
 export function filterTasks(filterType) {
   return {
@@ -112,6 +102,23 @@ export function deleteTask(taskId) {
         'Content-Type': 'application/json'
       },
       method: 'DELETE'
+    }).then(checkStatus)
+      .then(parseJSON)
+      .then((response) => {
+        dispatch(setDataToStore(response));
+      });
+  }
+}
+
+export function createTask(taskObj) {
+  return (dispatch) => {
+    return fetch(`api/v1/tasks`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(taskObj),
+      method: 'POST'
     }).then(checkStatus)
       .then(parseJSON)
       .then((response) => {

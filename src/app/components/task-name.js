@@ -17,9 +17,13 @@ class TaskItemName extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.taskItem.isEditable && !nextProps.taskItem.isEditable) {
+    if (!this.props.taskItem.isEditable) {
       this.setState({isSaving: false});
     }
+  }
+
+  componentDidMount() {
+    this.setState({isSaving: false});
   }
 
   render() {
@@ -28,9 +32,9 @@ class TaskItemName extends React.Component {
     } = this.props;
 
     if (taskItem.isEditable) {
-      // if (this.state.isSaving) {
-      //   return (<span>Loading...</span>);
-      // }
+      if (this.state.isSaving) {
+        return (<span>Loading...</span>);
+      }
       return (
         <input type="text"
           autoFocus

@@ -52,7 +52,12 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     create (name) {
-      const action = createTask(name);
+      let taskObj = {
+        name: name,
+        isCompleted: false,
+        isEdited: false
+      }
+      const action = createTask(taskObj);
       dispatch(action);
     }
   }
