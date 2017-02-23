@@ -1,7 +1,5 @@
 import _ from 'lodash';
 import { 
-  markTodoAsDone,
-  deleteTodo,
   createTodo,
   setData,
   setItem,
@@ -11,18 +9,6 @@ const initialTodosState = {}
 
 export default function todosReducer(state = initialTodosState, action) {
   switch (action.type) {
-    case markTodoAsDone:
-      return {
-        ...state,
-        [action.payload]: {
-          ...state[action.payload],
-          isCompleted: !state[action.payload].isCompleted
-        }
-      };
-
-    case deleteTodo:
-      return _.omit(state, action.payload);
-
     case createTodo:
       var idsArray = [];
       for (var objKey in state) {
