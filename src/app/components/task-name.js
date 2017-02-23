@@ -22,10 +22,6 @@ class TaskItemName extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.setState({isSaving: false});
-  }
-
   render() {
     const {
       taskItem,

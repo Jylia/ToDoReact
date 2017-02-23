@@ -56,73 +56,70 @@ export function fetchTodos() {
   }
 }
 
+function fetchQuery(fetchUrl, body, method, dispatch, thenFnc) {
+  return fetch(fetchUrl, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: body,
+    method: method
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then((response) => {
+      dispatch(thenFnc(response));
+    });
+}
+
 export function updateTask(taskId, taskObj, options) {
   let fetchUrl = `api/v1/tasks/${taskId}`;
   if (options && options.shoudBeEditable) {
     fetchUrl = `api/v1/tasks/${taskId}/setIsEditable`;
   }
   return (dispatch) => {
-      return fetch(fetchUrl, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(taskObj),
-      method: 'PUT'
-    }).then(checkStatus)
-      .then(parseJSON)
-      .then((response) => {
-        dispatch(setItemToStore(response));
-      });
+    return fetchQuery(
+      fetchUrl,
+      JSON.stringify(taskObj),
+      'PUT',
+      dispatch,
+      setItemToStore
+    );
   }
 }
 
 export function markAllTasksAsDone(isAllMarkedAsDone) {
   return (dispatch) => {
     isAllMarkedAsDone = !isAllMarkedAsDone;
-    return fetch(`api/v1/tasks/toggleAll/${isAllMarkedAsDone}`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'PUT'
-    }).then(checkStatus)
-      .then(parseJSON)
-      .then((response) => {
-        dispatch(setDataToStore(response));
-      });
+    return fetchQuery(
+      `api/v1/tasks/toggleAll/${isAllMarkedAsDone}`,
+      {},
+      'PUT',
+      dispatch,
+      setDataToStore
+    );
   }
 }
 
 export function deleteTask(taskId) {
   return (dispatch) => {
-    return fetch(`api/v1/tasks/${taskId}`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'DELETE'
-    }).then(checkStatus)
-      .then(parseJSON)
-      .then((response) => {
-        dispatch(setDataToStore(response));
-      });
+    return fetchQuery(
+      `api/v1/tasks/${taskId}`,
+      {},
+      'DELETE',
+      dispatch,
+      setDataToStore
+    );
   }
 }
 
 export function createTask(taskObj) {
   return (dispatch) => {
-    return fetch(`api/v1/tasks`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(taskObj),
-      method: 'POST'
-    }).then(checkStatus)
-      .then(parseJSON)
-      .then((response) => {
-        dispatch(setDataToStore(response));
-      });
+    return fetchQuery(
+      `api/v1/tasks`,
+      JSON.stringify(taskObj),
+      'POST',
+      dispatch,
+      setDataToStore
+    );
   }
 }
