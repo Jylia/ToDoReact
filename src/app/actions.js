@@ -1,7 +1,6 @@
 import { 
   markTodoAsDone,
   deleteTodo,
-  markAllAsDone,
   createTodo,
   filterTodos,
   setData,
@@ -19,15 +18,6 @@ export function deleteTask(taskId) {
   return {
     type: deleteTodo,
     payload: taskId
-  }
-}
-
-export function markAllTasksAsDone(isAllMarkedAsDone) {
-  return {
-    type: markAllAsDone,
-    payload: {
-      isAllMarkedAsDone
-    }
   }
 }
 
@@ -109,6 +99,23 @@ export function updateTask(taskId, taskObj, options) {
       .then(parseJSON)
       .then((response) => {
         dispatch(setItemToStore(response));
+      });
+  }
+}
+
+export function markAllTasksAsDone(isAllMarkedAsDone) {
+  return (dispatch) => {
+      isAllMarkedAsDone = !isAllMarkedAsDone;
+      return fetch(`api/v1/tasks/toggleAll/${isAllMarkedAsDone}`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'PUT'
+    }).then(checkStatus)
+      .then(parseJSON)
+      .then((response) => {
+        dispatch(setDataToStore(response));
       });
   }
 }

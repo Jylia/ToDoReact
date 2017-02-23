@@ -2,11 +2,9 @@ import _ from 'lodash';
 import { 
   markTodoAsDone,
   deleteTodo,
-  setIsEditableTodo,
   createTodo,
   setData,
   setItem,
-  markAllAsDone
 } from '../constants';
 
 const initialTodosState = {}
@@ -21,15 +19,6 @@ export default function todosReducer(state = initialTodosState, action) {
           isCompleted: !state[action.payload].isCompleted
         }
       };
-
-    case markAllAsDone:
-      return Object.entries(state).reduce((acc, [key, taskItem]) => ({
-        ...acc,
-        [key]: {
-          ...taskItem,
-          isCompleted: !action.payload.isAllMarkedAsDone
-        }
-      }), {});
 
     case deleteTodo:
       return _.omit(state, action.payload);
