@@ -13,8 +13,7 @@ import {
 
 import './styles.css';
 
-
-class TaskList extends React.Component {
+export class TaskList extends React.Component {
   componentDidMount() {
     this.props.fetchData();
   }
