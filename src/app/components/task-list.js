@@ -2,12 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 import { List } from 'material-ui/List';
-import RaisedButton from 'material-ui/RaisedButton';
 import TaskItem from './task-item';
+import Filter from './filter';
 import NewTaskForm from './new-task-form';
 import {
   markAllTasksAsDone,
-  filterTasks,
   fetchTodos
 } from '../actions';
 
@@ -20,13 +19,8 @@ export class TaskList extends React.Component {
 
   render() {
     const {
-      markAllAsDone,
-      filterTodos
+      markAllAsDone
     } = this.props;
-
-    const style = {
-      margin: 12,
-    };
 
     return (
       <div>
@@ -36,26 +30,9 @@ export class TaskList extends React.Component {
               <div>Loading data...</div>
               ) : (
                 <div className="container">
-                  <div className="filters">
-                    <RaisedButton
-                      label="All"
-                      disabled={this.props.visibilityFilter === 'ALL'}
-                      style={style}
-                      onTouchTap={() => filterTodos('ALL')}
-                    />
-                    <RaisedButton
-                      label="Completed"
-                      disabled={this.props.visibilityFilter === 'COMPLETED'}
-                      style={style}
-                      onTouchTap={() => filterTodos('COMPLETED')}
-                    />
-                    <RaisedButton
-                      label="Uncompleted"
-                      disabled={this.props.visibilityFilter === 'UNCOMPLETED'}
-                      style={style}
-                      onTouchTap={() => filterTodos('UNCOMPLETED')}
-                    />
-                  </div>
+                  <Filter
+                    visibilityFilter={this.props.visibilityFilter}
+                  />
                   <Checkbox
                       label={`Mark All as ${this.props.isAllMarkedAsDone ? 'Uncompleted' : 'Completed'}`}
                       onCheck={() => markAllAsDone(this.props.isAllMarkedAsDone)}
@@ -63,9 +40,7 @@ export class TaskList extends React.Component {
                       disabled={!Object.keys(this.props.tasks).length}
                   />
                   <div>
-                    <div>
-                      <NewTaskForm />
-                    </div>
+                    <NewTaskForm />
                     <List>
                       <h3>Tasks for Today</h3>
                       {
@@ -120,8 +95,7 @@ const mapStateToProps = (state) => {
     isLoading: state.todos.loading.isLoading,
     isAllMarkedAsDone: Object.entries(state.todos.tasks).map(([key, taskItem]) => {
       return taskItem.isCompleted;
-    }).every(isCompleted => isCompleted),
-    visibilityFilter: visibilityFilter
+    }).every(isCompleted => isCompleted)
   }
 }
 
@@ -129,10 +103,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     markAllAsDone (isAllMarkedAsDone) {
       const action = markAllTasksAsDone(isAllMarkedAsDone);
-      dispatch(action);
-    },
-    filterTodos (filterType) {
-      const action = filterTasks(filterType);
       dispatch(action);
     },
     fetchData () {
