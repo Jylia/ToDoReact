@@ -10,11 +10,15 @@ class App extends React.Component {
   }
 
   render() {
+    const style = {
+      margin: 24,
+    };
+
     return (
       <MuiThemeProvider muiTheme={this.muiTheme}>
         <div className="App">
           <div className="App-header">
-            <h2>ToDo Lists</h2>
+            <h2 style={style}>ToDo Lists</h2>
           </div>
           <div className="App-intro">
             <TaskList/>
