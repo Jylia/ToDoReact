@@ -3,6 +3,7 @@ import { TaskList } from '../../app/components/task-list';
 import renderer from 'react-test-renderer';
 import Checkbox from 'material-ui/Checkbox';
 import NewTaskForm from '../../app/components/new-task-form';
+import Filter from '../../app/components/filter';
 import TaskItem from '../../app/components/task-item';
 import { shallow, mount, render } from 'enzyme';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -65,12 +66,13 @@ describe('components', () => {
         </MuiThemeProvider>
       );
       
+      // console.log(component.dive().debug());
       expect(component.dive().find('.TaskList').exists()).toBe(true);
       expect(component.dive().find('.container').exists()).toBe(true);
-      expect(component.dive().find('.filters').exists()).toBe(true);
       expect(component.dive().find('h3').exists()).toBe(true);
       expect(component.dive().find('h3').html()).toBe('<h3>Tasks for Today</h3>');
-      expect(component.dive().find('.filters').children().length).toBe(3);
+      // expect(component.dive().find('.filters').children().length).toBe(3);
+      expect(component.dive().find(Filter).exists()).toBe(true);
       expect(component.dive().find(Checkbox).exists()).toBe(true);
       expect(component.dive().find(NewTaskForm).exists()).toBe(true);
       expect(component.dive().find(TaskItem).exists()).toBe(true);
