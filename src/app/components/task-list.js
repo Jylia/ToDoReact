@@ -36,7 +36,7 @@ export class TaskList extends React.Component {
               <div>Loading data...</div>
               ) : (
                 <div className="container">
-                  <div>
+                  <div className="filters">
                     <RaisedButton
                       label="All"
                       disabled={this.props.visibilityFilter === 'ALL'}
@@ -63,27 +63,27 @@ export class TaskList extends React.Component {
                       disabled={!Object.keys(this.props.tasks).length}
                   />
                   <div>
-                  <div>
-                    <NewTaskForm />
-                  </div>
-                  <List>
-                    <h3>Tasks for Today</h3>
-                    {
-                      Object.entries(this.props.tasks).map(
-                        ([key, taskItem]) =>
-                        <TaskItem
-                          key={key}
-                          taskItem={taskItem}
-                          taskId={taskItem.id}
-                          toggleCompleted={id => this.toggleCompleted(key)}
-                          updateTaskName={e => this.updateTaskName(e, key)}
-                          deleteTask={id => this.deleteTask(key)}
-                          setAsEditable={id => this.setAsEditable(id)}
-                          updateTaskNameById={(id, name) => this.updateTaskNameById(id, name)}
-                        />
-                      )
-                    }
-                  </List>
+                    <div>
+                      <NewTaskForm />
+                    </div>
+                    <List>
+                      <h3>Tasks for Today</h3>
+                      {
+                        Object.entries(this.props.tasks).map(
+                          ([key, taskItem]) =>
+                          <TaskItem
+                            key={key}
+                            taskItem={taskItem}
+                            taskId={taskItem.id}
+                            toggleCompleted={id => this.toggleCompleted(key)}
+                            updateTaskName={e => this.updateTaskName(e, key)}
+                            deleteTask={id => this.deleteTask(key)}
+                            setAsEditable={id => this.setAsEditable(id)}
+                            updateTaskNameById={(id, name) => this.updateTaskNameById(id, name)}
+                          />
+                        )
+                      }
+                    </List>
                   </div>
                 </div>
               )
