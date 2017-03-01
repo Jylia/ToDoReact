@@ -3,7 +3,6 @@ import renderer from 'react-test-renderer';
 import { shallow, render } from 'enzyme';
 
 import Checkbox from 'material-ui/Checkbox';
-import RaisedButton from 'material-ui/RaisedButton';
 
 import { TaskList } from '../../app/components/task-list';
 import NewTaskForm from '../../app/components/new-task-form';
