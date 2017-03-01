@@ -10,7 +10,7 @@ import {
 
 } from '../actions';
 
-class TaskItem extends React.Component {
+export class TaskItem extends React.Component {
   render() {
     const {
       taskItem,
