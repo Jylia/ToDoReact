@@ -1,20 +1,17 @@
 import React from 'react';
-import { TaskList } from '../../app/components/task-list';
 import renderer from 'react-test-renderer';
+import { shallow, render } from 'enzyme';
+
 import Checkbox from 'material-ui/Checkbox';
+import RaisedButton from 'material-ui/RaisedButton';
+
+import { TaskList } from '../../app/components/task-list';
 import NewTaskForm from '../../app/components/new-task-form';
 import Filter from '../../app/components/filter';
 import TaskItem from '../../app/components/task-item';
-import { shallow, mount, render } from 'enzyme';
-import RaisedButton from 'material-ui/RaisedButton';
+
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
-test('Addition', () => {
-  it('knows that 2 and 2 make 4', () => {
-    expect(2 + 2).toBe(4);
-  });
-});
 
 Object.entries = x =>
   Object.keys(x).reduce((y, z) =>
@@ -70,7 +67,7 @@ describe('components', () => {
       expect(component.dive().find('.TaskList').exists()).toBe(true);
       expect(component.dive().find('.container').exists()).toBe(true);
       expect(component.dive().find('h3').exists()).toBe(true);
-      expect(component.dive().find('h3').html()).toBe('<h3>Tasks for Today</h3>');
+      expect(component.dive().find('h3').text()).toBe('Tasks for Today');
       // expect(component.dive().find('.filters').children().length).toBe(3);
       expect(component.dive().find(Filter).exists()).toBe(true);
       expect(component.dive().find(Checkbox).exists()).toBe(true);
