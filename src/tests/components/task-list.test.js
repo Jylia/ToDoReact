@@ -67,7 +67,6 @@ describe('components', () => {
       expect(component.dive().find('.container').exists()).toBe(true);
       expect(component.dive().find('h3').exists()).toBe(true);
       expect(component.dive().find('h3').text()).toBe('Tasks for Today');
-      // expect(component.dive().find('.filters').children().length).toBe(3);
       expect(component.dive().find(Filter).exists()).toBe(true);
       expect(component.dive().find(Checkbox).exists()).toBe(true);
       expect(component.dive().find(NewTaskForm).exists()).toBe(true);
