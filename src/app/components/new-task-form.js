@@ -6,7 +6,7 @@ import {
   createTask
 } from '../actions';
 
-class NewTaskForm extends React.Component {
+export class NewTaskForm extends React.Component {
   constructor() {
     super();
     this.state = {
