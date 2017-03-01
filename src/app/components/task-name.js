@@ -4,7 +4,7 @@ import {
   updateTask
 } from '../actions';
 
-class TaskItemName extends React.Component {
+export class TaskItemName extends React.Component {
   state = {
     isSaving: false
   }
