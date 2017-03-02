@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 import RaisedButton from 'material-ui/RaisedButton';
 import { ListItem } from 'material-ui/List';
+import Chip from 'material-ui/Chip';
+import { cyan300 } from 'material-ui/styles/colors';
 import TaskItemName from './task-name';
 import {
   updateTask,
@@ -18,6 +20,12 @@ export class TaskItem extends React.Component {
       edit
     } = this.props;
 
+    const styles = {
+      chip: {
+        margin: 4
+      }
+    };
+
     function prepareObjCompletedToggle(taskItem) {
       taskItem.isEditable = false;
       taskItem.isCompleted = !taskItem.isCompleted;
@@ -27,18 +35,32 @@ export class TaskItem extends React.Component {
     return (
       <div className="TaskItem">
         <ListItem>
-          <div style={{display: 'flex', justifyContent: 'space-between'}}>
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <div>
               <Checkbox
                 onCheck={() => edit(taskItem.id, prepareObjCompletedToggle(taskItem))}
                 checked={taskItem.isCompleted}
               />
             </div>
-            <div onTouchTap={() => { edit(taskItem.id, taskItem, { shoudBeEditable: true}) }} style={{flexGrow: 2, flexBasis: '100%'}}>
+            <div
+              onTouchTap={() => {edit(taskItem.id, taskItem, { shoudBeEditable: true}) }}
+              style={{alignSelf: 'flex-start', whiteSpace: 'nowrap'}}
+            >
               <TaskItemName
                 taskItem={taskItem}
                 updateTaskNameById={this.props.updateTaskNameById}
               />
+            </div>
+            <div>
+              {taskItem.dueDate}
+            </div>
+            <div>
+              <Chip
+                backgroundColor={cyan300}
+                style={styles.chip}
+              >
+                { this.props.priorityText }
+              </Chip>
             </div>
             <div style={{whiteSpace: 'nowrap'}}>
               <RaisedButton 
@@ -54,8 +76,24 @@ export class TaskItem extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  const getPriorityText = (priority) => {
+    switch (priority) {
+      case 1:
+        return 'Very Important';
+      case 2:
+        return 'Important';
+      case 3:
+        return 'Not Important';
+      case 4:
+        return 'Can be delayed';
+      default:
+        return 'Can be delayed';
+    }
+  } 
+
   return {
     task: state.todos.tasks[props.taskId],
+    priorityText: getPriorityText(state.todos.tasks[props.taskId].priority)
   }
 }
 
