@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 import { List } from 'material-ui/List';
 import TaskItem from './task-item';
-import Filter from './filter';
+import Filter from '../common/filter';
 import NewTaskForm from './new-task-form';
 import {
   markAllTasksAsDone,
   fetchTodos
-} from '../actions';
+} from '../../actions';
 
 import './styles.css';
 
@@ -31,6 +31,7 @@ export class TaskList extends React.Component {
               ) : (
                 <div className="container">
                   <Filter
+                    filtersList={this.props.filtersList}
                     visibilityFilter={this.props.visibilityFilter}
                   />
                   <Checkbox
@@ -95,7 +96,8 @@ const mapStateToProps = (state) => {
     isLoading: state.todos.loading.isLoading,
     isAllMarkedAsDone: Object.entries(state.todos.tasks).map(([key, taskItem]) => {
       return taskItem.isCompleted;
-    }).every(isCompleted => isCompleted)
+    }).every(isCompleted => isCompleted),
+    filtersList: ['ALL', 'COMPLETED', 'UNCOMPLETED']
   }
 }
 

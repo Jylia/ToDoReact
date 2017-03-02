@@ -8,7 +8,7 @@ import {
   updateTask,
   deleteTask
 
-} from '../actions';
+} from '../../actions';
 
 export class TaskItem extends React.Component {
   render() {

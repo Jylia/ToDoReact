@@ -4,10 +4,10 @@ import { shallow, render } from 'enzyme';
 
 import Checkbox from 'material-ui/Checkbox';
 
-import { TaskList } from '../../app/components/task-list';
-import NewTaskForm from '../../app/components/new-task-form';
-import Filter from '../../app/components/filter';
-import TaskItem from '../../app/components/task-item';
+import { TaskList } from '../../../app/components/tasks/task-list';
+import NewTaskForm from '../../../app/components/tasks/new-task-form';
+import Filter from '../../../app/components/common/filter';
+import TaskItem from '../../../app/components/tasks/task-item';
 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';

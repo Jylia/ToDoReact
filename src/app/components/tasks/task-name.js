@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
   updateTask
-} from '../actions';
+} from '../../actions';
 
 export class TaskItemName extends React.Component {
   state = {

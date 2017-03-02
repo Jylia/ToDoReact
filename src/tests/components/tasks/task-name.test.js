@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
-import { TaskItemName } from '../../app/components/task-name';
+import { TaskItemName } from '../../../app/components/tasks/task-name';
 
 describe('components', () => {
   describe('TaskItemName', () => {

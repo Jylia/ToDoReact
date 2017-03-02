@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import {
   filterTasks
-} from '../actions';
-
-import './styles.css';
+} from '../../actions';
 
 export class Filter extends React.Component {
   render() {
@@ -19,22 +17,17 @@ export class Filter extends React.Component {
 
     return (
       <div className="filters">
-        <RaisedButton
-          label="All"
-          disabled={this.props.visibilityFilter === 'ALL'}
-          onTouchTap={() => filterTodos('ALL')}
-        />
-        <RaisedButton
-          label="Completed"
-          disabled={this.props.visibilityFilter === 'COMPLETED'}
-          style={style}
-          onTouchTap={() => filterTodos('COMPLETED')}
-        />
-        <RaisedButton
-          label="Uncompleted"
-          disabled={this.props.visibilityFilter === 'UNCOMPLETED'}
-          onTouchTap={() => filterTodos('UNCOMPLETED')}
-        />
+        {
+          this.props.filtersList.map((filterItem) =>
+            <RaisedButton
+              label={filterItem}
+              key={filterItem}
+              disabled={this.props.visibilityFilter === filterItem}
+              style={style}
+              onTouchTap={() => filterTodos(filterItem)}
+            />
+          )
+        }
       </div>
     );
   }

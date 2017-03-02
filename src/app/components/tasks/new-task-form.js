@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {
   createTask
-} from '../actions';
+} from '../../actions';
 
 export class NewTaskForm extends React.Component {
   constructor() {

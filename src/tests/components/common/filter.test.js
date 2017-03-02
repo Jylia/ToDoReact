@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { Filter } from '../../app/components/filter';
+import { Filter } from '../../../app/components/common/filter';
 
 describe('components', () => {
   describe('Filter', () => {
