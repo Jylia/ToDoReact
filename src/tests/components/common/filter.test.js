@@ -10,11 +10,13 @@ describe('components', () => {
     test(`Filter should be showed`, () => {
 
       const component = shallow(
-          <Filter/>
+          <Filter
+            filtersList={['All', 'Not All']}
+          />
       );
       
       expect(component.find(RaisedButton).exists()).toBe(true);
-      expect(component.find(RaisedButton).length).toBe(3);
+      expect(component.find(RaisedButton).length).toBe(2);
     });
   });
 });

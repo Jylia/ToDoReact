@@ -1,0 +1,10 @@
+exports[`components TaskList 'Loading data' should be displayed when data has not loaded yet 1`] = `
+<div>
+  <div
+    className="TaskList">
+    <div>
+      Loading data...
+    </div>
+  </div>
+</div>
+`;

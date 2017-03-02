@@ -44,17 +44,17 @@ export class TaskItem extends React.Component {
             </div>
             <div
               onTouchTap={() => {edit(taskItem.id, taskItem, { shoudBeEditable: true}) }}
-              style={{alignSelf: 'flex-start', whiteSpace: 'nowrap'}}
+              style={{flex: 1}}
             >
               <TaskItemName
                 taskItem={taskItem}
                 updateTaskNameById={this.props.updateTaskNameById}
               />
             </div>
-            <div>
+            <div style={{paddingRight: '1rem'}}>
               {taskItem.dueDate}
             </div>
-            <div>
+            <div style={{paddingRight: '1rem'}}>
               <Chip
                 backgroundColor={cyan300}
                 style={styles.chip}

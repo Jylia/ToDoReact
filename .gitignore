@@ -13,7 +13,3 @@ build
 .DS_Store
 .env
 npm-debug.log
-
-src/tests/components/__snapshots__/
-
-src/tests/components/tasks/__snapshots__/

@@ -22,16 +22,12 @@ describe('components', () => {
           />
       );
       
-      console.log(component.debug());
-      // expect(component.find('form').exists()).toBe(true);
+      // console.log(component.debug());
       expect(component.find(ListItem).length).toBe(1);
       expect(component.find(Checkbox).length).toBe(1);
       expect(component.find(TaskItemName).length).toBe(1);
       expect(component.find(RaisedButton).length).toBe(1);
       expect(component.find(RaisedButton).prop('label')).toBe("Delete Task");
-
-
-      // expect(component.find(TextField).exists()).toBe(true);
     });
   });
 });
