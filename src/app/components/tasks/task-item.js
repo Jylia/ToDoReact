@@ -4,7 +4,10 @@ import Checkbox from 'material-ui/Checkbox';
 import RaisedButton from 'material-ui/RaisedButton';
 import { ListItem } from 'material-ui/List';
 import Chip from 'material-ui/Chip';
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
 import { cyan300 } from 'material-ui/styles/colors';
+import ActionGrade from 'material-ui/svg-icons/action/delete';
 import TaskItemName from './task-name';
 import {
   updateTask,
@@ -63,10 +66,11 @@ export class TaskItem extends React.Component {
               </Chip>
             </div>
             <div style={{whiteSpace: 'nowrap'}}>
-              <RaisedButton 
-                label="Delete Task" secondary={true}
+              <IconButton
                 onTouchTap={() => deleteTask(taskItem.id)}
-              />
+              >
+                <ActionGrade />
+              </IconButton>
             </div>
           </div>
         </ListItem>
