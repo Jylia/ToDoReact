@@ -33,6 +33,7 @@ export class DaysList extends React.Component {
           padding={1}
           style={styles.gridList}
         >
+          <h2>Tasks for the next 7 days</h2>
           {currentWeek().map((day) => (
             <GridTile
               key={day.title}
