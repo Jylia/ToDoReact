@@ -28,7 +28,7 @@ export class DaysList extends React.Component {
     return (
       <div>
         <GridList
-          cols={2}
+          cols={1}
           cellHeight='auto'
           padding={1}
           style={styles.gridList}
