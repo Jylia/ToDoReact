@@ -114,6 +114,7 @@ export function deleteTask(taskId) {
 
 export function createTask(taskObj) {
   return (dispatch) => {
+    taskObj.dueDate = new Date(taskObj.dueDate.getTime() - (taskObj.dueDate.getTimezoneOffset() * 60000));
     return fetchQuery(
       `api/v1/tasks`,
       JSON.stringify(taskObj),
