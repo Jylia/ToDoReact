@@ -19,23 +19,6 @@ export class TaskList extends React.Component {
       markAllAsDone
     } = this.props;
 
-    const styles = {
-      root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        height: '100%'
-      },
-      gridList: {
-        width: '100%',
-        height: '100%',
-        overflowY: 'auto',
-      },
-      titleStyle: {
-        height: '100%',
-      }
-    };
-
     return (
       <div>
         <div className="TaskList">
