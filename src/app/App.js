@@ -1,5 +1,5 @@
 import React from 'react';
-import TaskList from './components/tasks/task-list';
+import TaskList from './components/tasks/taskList';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 

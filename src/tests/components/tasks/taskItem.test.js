@@ -5,8 +5,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
 import { ListItem } from 'material-ui/List';
 
-import { TaskItem } from '../../../app/components/tasks/task-item';
-import TaskItemName from '../../../app/components/tasks/task-name';
+import { TaskItem } from '../../../app/components/tasks/taskItem';
+import TaskItemName from '../../../app/components/tasks/taskName';
 
 describe('components', () => {
   describe('TaskItem', () => {

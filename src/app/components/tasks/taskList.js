@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 import Filter from '../common/filter';
 import DaysList from '../calendar/week/daysList';
-import NewTaskForm from './new-task-form';
+import NewTaskForm from './newTaskForm';
 import {
   markAllTasksAsDone,
   fetchTodos

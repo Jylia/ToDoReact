@@ -6,7 +6,7 @@ import Chip from 'material-ui/Chip';
 import IconButton from 'material-ui/IconButton';
 import { cyan300 } from 'material-ui/styles/colors';
 import ActionGrade from 'material-ui/svg-icons/action/delete';
-import TaskItemName from './task-name';
+import TaskItemName from './taskName';
 import {
   updateTask,
   deleteTask

@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
-import { NewTaskForm } from '../../../app/components/tasks/new-task-form';
+import { NewTaskForm } from '../../../app/components/tasks/newTaskForm';
 
 describe('components', () => {
   describe('NewTaskForm', () => {

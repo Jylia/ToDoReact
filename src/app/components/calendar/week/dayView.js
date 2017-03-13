@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
-import TaskItem from '../../tasks/task-item';
+import TaskItem from '../../tasks/taskItem';
 import {
   markAllTasksAsDone,
   fetchTodos
