@@ -36,7 +36,7 @@ export class DaysList extends React.Component {
           <h2>Tasks for the next 7 days</h2>
           {currentWeek().map((day) => (
             <GridTile
-              key={day.title}
+              key={`${day.title}-${day.img}`}
               actionPosition="left"
               titlePosition="top"
               titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
