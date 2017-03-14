@@ -2,10 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import TaskItem from '../../tasks/taskItem';
-import {
-  markAllTasksAsDone,
-  fetchTodos
-} from '../../../actions';
 import {toDateString, isDatesEqual, isOverdueDate} from '../../../helpers/dateHelper';
 
 const getTasksForCurrentDate = (date, tasks) => {
@@ -31,42 +27,20 @@ const nonDateTasks = (date, tasks) => {
 }
 
 export class DayView extends React.Component {
-  componentDidMount() {
-    this.props.fetchData();
-  }
-
   render() {
     return (
       <Card>
-        <CardHeader
-          title={`${this.props.day.title} ${toDateString(this.props.day.date)}`}
-          subtitle={`${Object.entries(this.props.tasks).length} tasks`}
-          avatar={this.props.day.img}
-        />
         {
           getTasksForCurrentDate(this.props.day.date, Object.entries(this.props.tasks)).length ? 
-            <CardText>
-              {
-                getTasksForCurrentDate(this.props.day.date, Object.entries(this.props.tasks)).map( 
-                  ([key, taskItem]) => 
-                  <TaskItem 
-                    key={key} 
-                    taskItem={taskItem} 
-                    taskId={taskItem.id} 
-                    toggleCompleted={id => this.toggleCompleted(key)} 
-                    updateTaskName={e => this.updateTaskName(e, key)} 
-                    deleteTask={id => this.deleteTask(key)} 
-                    setAsEditable={id => this.setAsEditable(id)} 
-                    updateTaskNameById={(id, name) => this.updateTaskNameById(id, name)} 
-                  /> 
-                ) 
-              }
-            </CardText>
-          :
-            <CardText>
-              {
-                this.props.day.isToday && nonDateTasks(this.props.day.date, Object.entries(this.props.tasks)).length ?
-                  nonDateTasks(this.props.day.date, Object.entries(this.props.tasks)).map(
+            <div>
+              <CardHeader
+                title={`${this.props.day.title} ${toDateString(this.props.day.date)}`}
+                subtitle={`${getTasksForCurrentDate(this.props.day.date, Object.entries(this.props.tasks)).length} tasks`}
+                avatar={this.props.day.img}
+              />
+              <CardText>
+                {
+                  getTasksForCurrentDate(this.props.day.date, Object.entries(this.props.tasks)).map( 
                     ([key, taskItem]) => 
                     <TaskItem 
                       key={key} 
@@ -78,11 +52,38 @@ export class DayView extends React.Component {
                       setAsEditable={id => this.setAsEditable(id)} 
                       updateTaskNameById={(id, name) => this.updateTaskNameById(id, name)} 
                     /> 
-                  )
-                :
-                  <span>No tasks for this day</span>
-              }
-            </CardText>
+                  ) 
+                }
+              </CardText>
+            </div>
+          :
+            <div>
+              <CardHeader
+                title={`${this.props.day.title} ${toDateString(this.props.day.date)}`}
+                subtitle={`${nonDateTasks(this.props.day.date, Object.entries(this.props.tasks)).length} tasks`}
+                avatar={this.props.day.img}
+              />
+              <CardText>
+                {
+                  this.props.day.isToday && nonDateTasks(this.props.day.date, Object.entries(this.props.tasks)).length ?
+                    nonDateTasks(this.props.day.date, Object.entries(this.props.tasks)).map(
+                      ([key, taskItem]) => 
+                      <TaskItem 
+                        key={key} 
+                        taskItem={taskItem} 
+                        taskId={taskItem.id} 
+                        toggleCompleted={id => this.toggleCompleted(key)} 
+                        updateTaskName={e => this.updateTaskName(e, key)} 
+                        deleteTask={id => this.deleteTask(key)} 
+                        setAsEditable={id => this.setAsEditable(id)} 
+                        updateTaskNameById={(id, name) => this.updateTaskNameById(id, name)} 
+                      /> 
+                    )
+                  :
+                    <span>No tasks for this day</span>
+                }
+              </CardText>
+            </div>
         }
       </Card>
     );
@@ -90,47 +91,11 @@ export class DayView extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const visibilityFilter = state.filter;
-  return {
-    tasks: Object.entries(state.todos.tasks).reduce((acc, [key, taskItem]) => {
-      switch (visibilityFilter) {
-        case 'ALL':
-          acc[key] = taskItem;
-          break;
-        case 'COMPLETED': 
-          if (taskItem.isCompleted) {
-            acc[key] = taskItem;
-          }
-          break;
-        case 'UNCOMPLETED':
-          if (!taskItem.isCompleted) {
-            acc[key] = taskItem;
-          }
-          break;
-        default:
-          break;
-      }
-      return acc;
-    }, {}),
-    isLoading: state.todos.loading.isLoading,
-    isAllMarkedAsDone: Object.entries(state.todos.tasks).map(([key, taskItem]) => {
-      return taskItem.isCompleted;
-    }).every(isCompleted => isCompleted),
-      filtersList: ['ALL', 'COMPLETED', 'UNCOMPLETED']
-    }
+  return {}
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    markAllAsDone (isAllMarkedAsDone) {
-      const action = markAllTasksAsDone(isAllMarkedAsDone);
-      dispatch(action);
-    },
-    
-    fetchData () {
-      dispatch(fetchTodos());
-    }
-  }
+  return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DayView);
