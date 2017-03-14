@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 import Filter from '../common/filter';
 import DaysList from '../calendar/week/daysList';
+import ListView from '../list/listView';
 import NewTaskForm from './newTaskForm';
 import {
   markAllTasksAsDone,
@@ -12,6 +13,13 @@ import {
 export class TaskList extends React.Component {
   componentDidMount() {
     this.props.fetchData();
+  }
+
+  constructor() {
+    super();
+    this.state = {
+      viewType: 'week',
+    };
   }
 
   render() {
@@ -40,13 +48,31 @@ export class TaskList extends React.Component {
                   <div>
                     <NewTaskForm />
                   </div>
+                  <div className="viewTypeFilter">
+                    <Filter
+                      filtersList={['list', 'week']}
+                      currentFilter={this.state.viewType}
+                      filterFunc={(filterType) => {
+                        this.setState({viewType: filterType})
+                      }}
+                    />
+                  </div>
                 </div>
               )
           }
         </div>
-        <DaysList 
-          tasks={this.props.tasks}
-        />
+        <div>
+          {
+            this.state.viewType === 'list' ?
+              <ListView
+                tasks={this.props.tasks}
+              />
+            :
+              <DaysList 
+                tasks={this.props.tasks}
+              />
+          }
+        </div>
       </div>
     );
   }

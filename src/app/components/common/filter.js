@@ -8,7 +8,7 @@ import {
 export class Filter extends React.Component {
   render() {
     const {
-      filterTodos
+      filterTodos,
     } = this.props;
 
     const style = {
@@ -22,9 +22,12 @@ export class Filter extends React.Component {
             <RaisedButton
               label={filterItem}
               key={filterItem}
-              disabled={this.props.visibilityFilter === filterItem}
+              disabled={this.props.visibilityFilter === filterItem || this.props.currentFilter === filterItem}
               style={style}
-              onTouchTap={() => filterTodos(filterItem)}
+              onTouchTap={() => {
+                this.props.filterFunc ? this.props.filterFunc(filterItem) : filterTodos(filterItem)
+                }
+              }
             />
           )
         }
