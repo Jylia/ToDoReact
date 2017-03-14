@@ -6,7 +6,7 @@ import {
   markAllTasksAsDone,
   fetchTodos
 } from '../../../actions';
-import {toDateString, isDatesEqual} from '../../../helpers/dateHelper';
+import {toDateString, isDatesEqual, isOverdueDate} from '../../../helpers/dateHelper';
 
 const getTasksForCurrentDate = (date, tasks) => {
   return tasks.filter(
@@ -21,7 +21,11 @@ const nonDateTasks = (date, tasks) => {
   return tasks.filter(
     (task) => {
       let currentTask = task[1];
-      return currentTask && (!currentTask.dueDate || isDatesEqual(new Date(currentTask.dueDate), date));
+      return currentTask &&
+            (!currentTask.dueDate ||
+              isDatesEqual(new Date(currentTask.dueDate), date) ||
+              isOverdueDate(new Date(currentTask.dueDate), date)) &&
+              !currentTask.isCompleted;
     }
   )
 }
